@@ -1,0 +1,1175 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Tiếng gõ của thực tiễn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: five sticky stages, one per chapter. The page colour travels
+   smoky paper → sepia → coal → red → night as the reader scrolls, so the
+   argument "philosophy comes down to earth" is felt before it is read.
+   Single committed look (the colour journey is the story), so no dark-mode remap. */
+:root{
+  --paper:#E2DDD1;      /* smoky newsprint, chapter 0 */
+  --sepia:#D2C09B;      /* café light, chapter I */
+  --coal:#24221E;       /* Manchester soot, chapter II */
+  --blood:#741915;      /* thesis 11, chapter III */
+  --night:#11100E;      /* afterword */
+  --ink:#1C1A16;
+  --ink-soft:#5A5347;
+  --chalk:#EFE8D9;
+  --chalk-soft:#B9AF9C;
+  --red:#B3261E;
+  --red-bright:#E2584B;
+  --card:#F2ECDF;
+  --f-display:"Playfair Display","Didot","Bodoni 72","Times New Roman",serif;
+  --f-text:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --f-note:"Roboto Mono",ui-monospace,"Courier New",monospace;
+  --f-hand:"Homemade Apple","Segoe Script","Brush Script MT",cursive;
+  --cur-bg:var(--paper);
+  --cur-ink:var(--ink);
+  --gutter:max(16px,5vw);
+  color-scheme:light;
+}
+html{scroll-behavior:auto}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-text);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.04;margin:0;text-wrap:balance}
+p{margin:0}
+em{font-style:italic}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red-bright);outline-offset:3px}
+.eyebrow{font-family:var(--f-text);font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.deck{font-family:var(--f-display);font-style:italic;font-weight:500;font-size:clamp(18px,1.6vw,22px);line-height:1.35}
+.hook{font-size:14px;line-height:1.5;border-top:1px solid currentColor;padding-top:10px;max-width:46ch;opacity:.86}
+.hook b{letter-spacing:.12em;text-transform:uppercase;font-size:11.5px;margin-right:6px}
+
+/* grain over everything */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* top chapter bar */
+.bar{position:fixed;top:0;left:0;right:0;z-index:40;padding-top:env(safe-area-inset-top,0px);
+  background:var(--cur-bg);background:color-mix(in srgb,var(--cur-bg) 92%,transparent);color:var(--cur-ink);
+  transition:background-color .35s,color .35s}
+.bar-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px var(--gutter);font-size:13px}
+.bar-title{font-family:var(--f-display);font-style:italic;font-weight:700;font-size:15px;white-space:nowrap}
+.bar nav{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.bar nav a{text-decoration:none;padding:3px 9px;border-radius:2px;letter-spacing:.04em;opacity:.62}
+.bar nav a[aria-current="true"]{opacity:1;box-shadow:inset 0 -2px 0 currentColor}
+.bar-now{display:none;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+.progress{height:2px;background:currentColor;opacity:.75;transform-origin:left;transform:scaleX(0)}
+@media (max-width:820px){.bar nav{display:none}.bar-now{display:block}}
+.bar-right{display:flex;align-items:center;gap:14px}
+.snd{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:inherit;background:transparent;border:1px solid currentColor;border-radius:2px;padding:5px 10px;cursor:pointer;white-space:nowrap}
+.snd:hover{background:color-mix(in srgb,currentColor 12%,transparent)}
+.snd .eq{display:inline-flex;align-items:flex-end;gap:2px;height:11px}
+.snd .eq i{display:block;width:2px;height:3px;background:currentColor}
+.snd[aria-pressed="true"] .eq i{animation:eq 1s infinite ease-in-out}
+.snd[aria-pressed="true"] .eq i:nth-child(2){animation-delay:-.35s}
+.snd[aria-pressed="true"] .eq i:nth-child(3){animation-delay:-.7s}
+@keyframes eq{0%,100%{height:3px}50%{height:11px}}
+@media (max-width:520px){.snd .snd-t{display:none}.bar-title{font-size:13.5px}}
+@media (prefers-reduced-motion:reduce){.snd[aria-pressed="true"] .eq i{animation:none;height:8px}}
+.cue-snd{text-transform:none;letter-spacing:.02em;font-style:italic}
+
+/* scenes */
+.scene{position:relative;height:calc(var(--len) * 1vh)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;padding-inline:var(--gutter);padding-block:76px 36px;display:flex;align-items:safe center;justify-content:center;background:var(--paper);color:var(--ink)}
+.stage > *{position:relative;z-index:1}
+.wide{width:100%;max-width:1180px;margin-inline:auto}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
+.copy{display:flex;flex-direction:column;gap:18px;min-width:0}
+.beats{display:flex;flex-direction:column;gap:12px;max-width:44ch}
+.beat{font-size:clamp(16px,1.25vw,18.5px);line-height:1.55;opacity:.36;transition:opacity .4s}
+.beat.on{opacity:1}
+.beat cite{font-style:normal;font-size:.82em;letter-spacing:.06em;opacity:.8;display:block;margin-top:2px}
+.stage.ink-light{color:var(--chalk)}
+
+/* ---------- 0. Hero ---------- */
+.hero .split{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}
+.hero .copy{gap:14px}
+.hero h1{font-size:clamp(44px,min(6.6vw,10.5vh),104px);font-weight:900;letter-spacing:-.01em;line-height:.92}
+.hero h1 i{font-weight:500;font-style:italic;display:block;font-size:.5em;letter-spacing:0;margin-top:.12em}
+.folio{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;border-top:3px double currentColor;border-bottom:1px solid currentColor;padding-block:6px;flex-wrap:wrap}
+.mark{position:relative;white-space:nowrap}
+.mark svg{position:absolute;left:-2%;bottom:-.32em;width:104%;height:.5em;overflow:visible}
+.mark path{fill:none;stroke:var(--red);stroke-width:3;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:calc(120 - 120 * var(--u,0))}
+.cue{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.window-art{position:relative;margin:0;width:min(100%,460px,calc((100svh - 150px) * .8));aspect-ratio:4/5;justify-self:center}
+.win{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#3B3934,#23211D);box-shadow:0 0 0 14px #CFC7B5,0 0 0 15px var(--ink)}
+.win::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(239,232,217,.07) 1px,transparent 1.6px);background-size:6px 6px;pointer-events:none}
+.win canvas{position:absolute;inset:0;width:100%;height:100%}
+.roofs{position:absolute;left:-6%;right:-6%;bottom:-2%;width:112%;height:auto}
+.frame{position:absolute;inset:0;width:100%;height:100%}
+.lamp{position:absolute;left:-22%;bottom:-16%;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(240,196,110,.55),rgba(240,196,110,0) 65%);mix-blend-mode:multiply;pointer-events:none;animation:flick 3.2s infinite steps(1,end)}
+@keyframes flick{0%,100%{opacity:1}37%{opacity:.86}38%{opacity:1}71%{opacity:.92}}
+.gazette{position:absolute;right:-12%;bottom:12%;width:62%;background:var(--card);color:var(--ink);padding:12px 14px 14px;box-shadow:0 18px 30px -18px rgba(0,0,0,.55);transform:rotate(-3deg);border:1px solid #BDB4A1}
+.gazette .g-mast{font-family:var(--f-display);font-weight:900;font-size:24px;text-align:center;border-bottom:3px double var(--ink);line-height:1.1;padding-bottom:4px}
+.gazette .g-date{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-block:3px;margin-bottom:6px}
+.gazette .g-head{font-family:var(--f-display);font-weight:700;font-size:17px;line-height:1.15}
+.gazette .g-cols{margin-top:6px;height:28px;background:repeating-linear-gradient(transparent 0 5px,rgba(28,26,22,.28) 5px 6px);column-count:2}
+.gazette .g-note{font-size:10.5px;color:var(--ink-soft);margin-top:6px;font-style:italic}
+
+/* ---------- I. Café ---------- */
+.meeting{position:relative;width:min(100%,520px,calc((100svh - 130px) / 1.2));aspect-ratio:1/1.2;justify-self:center}
+.board{position:absolute;inset:0;opacity:.09;background:conic-gradient(var(--ink) 25%,transparent 0 50%,var(--ink) 0 75%,transparent 0) 0 0/25% 20.83%}
+.plate{position:absolute;top:2%;width:47%;padding:14px 14px 12px;display:flex;flex-direction:column;gap:4px;border:1px solid currentColor;outline:3px double currentColor;outline-offset:-7px}
+.plate .who{font-family:var(--f-display);font-weight:900;font-size:clamp(20px,2.2vw,28px);line-height:1}
+.plate .age{font-size:13px;font-style:italic}
+.plate .route,.plate .carry{font-family:var(--f-note);font-size:11px;line-height:1.45;letter-spacing:.02em}
+.plate .carry{border-top:1px solid currentColor;padding-top:5px;margin-top:3px}
+.p-marx{left:2%;background:var(--card);color:var(--ink)}
+.p-engels{right:2%;background:var(--coal);color:var(--chalk)}
+.note{position:absolute;left:20%;width:60%;padding:10px 12px 12px;background:var(--card);color:var(--ink);font-family:var(--f-note);font-size:12px;line-height:1.5;
+  background-image:repeating-linear-gradient(transparent 0 17px,rgba(80,110,150,.18) 17px 18px);background-position:0 26px;box-shadow:0 12px 22px -14px rgba(0,0,0,.6);border:1px solid #CFC5B0}
+.note b{display:block;font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:10.5px;color:var(--red);margin-bottom:3px}
+.n1{top:32%}.n2{top:48%}.n3{top:64%}
+.seal{position:absolute;left:8%;right:8%;bottom:1.5%;text-align:center;padding:10px 12px;background:var(--ink);color:var(--chalk);font-size:13px;letter-spacing:.06em}
+.seal strong{display:block;font-family:var(--f-display);font-style:italic;font-weight:700;font-size:clamp(18px,1.8vw,22px);letter-spacing:0}
+.src{font-family:var(--f-note);font-size:11px;letter-spacing:.02em;opacity:.75}
+.margin-note{font-size:14px;font-style:italic;max-width:44ch;padding-left:12px;border-left:1px solid currentColor;opacity:.85}
+
+/* ---------- II. Hegel ---------- */
+.dust{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.pyr-wrap{display:flex;flex-direction:column;gap:12px;align-items:center;min-width:0}
+.pyr{width:min(100%,470px,calc((100svh - 250px) * 1.15));height:auto;overflow:visible}
+.pyr text{font-family:var(--f-text)}
+.pyr .lbl-big{font-family:var(--f-display);font-weight:900;font-size:19px;letter-spacing:.06em}
+.pyr .lbl-sm{font-size:13px;font-style:italic}
+.pyr .lbl-side{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase}
+.pyr-cap{font-size:13.5px;line-height:1.5;max-width:52ch;text-align:center;opacity:.85}
+.works{display:flex;gap:10px 28px;flex-wrap:wrap;font-size:13.5px;border-top:1px solid currentColor;padding-top:10px;margin-top:4px}
+.works span b{font-family:var(--f-display);font-weight:900;font-size:16px;margin-right:6px;font-variant-numeric:lining-nums tabular-nums}
+
+/* ---------- III. Thesis 11 ---------- */
+.thesis{color:var(--chalk);background:var(--coal)}
+.thesis-in{display:flex;flex-direction:column;gap:clamp(14px,2.4vh,26px);max-width:1040px}
+.manu{position:relative;font-family:var(--f-hand);font-size:clamp(16px,1.9vw,26px);line-height:1.75em;color:var(--chalk-soft)}
+.hand{display:block;clip-path:inset(-20% calc(var(--r,0) * 100%) -20% 0);width:max-content;max-width:100%}
+.caret{position:relative;display:inline-block;width:.3em}
+.caret::before{content:"^";position:absolute;left:0;bottom:-.25em;color:var(--red-bright);font-family:var(--f-text);font-size:1.1em;opacity:var(--a,0)}
+.aber{position:absolute;left:-.4em;bottom:1.05em;color:var(--red-bright);font-size:.8em;opacity:var(--a,0);white-space:nowrap}
+.aber-note{display:block;font-family:var(--f-note);font-size:11.5px;color:var(--red-bright);opacity:var(--a,0);margin-top:2px}
+.xi{margin:0;display:flex;flex-direction:column;gap:12px}
+.xi p{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,min(3.7vw,6.4vh),54px);line-height:1.12;text-wrap:balance;color:var(--chalk)}
+.ph{display:inline-block;opacity:calc(.12 + .88 * var(--o,1));transform:translateY(calc((1 - var(--o,1)) * 14px))}
+.strike{position:relative;display:inline-block}
+.strike::after{content:"";position:absolute;left:-3%;right:-3%;top:56%;height:.08em;background:var(--red-bright);transform:scaleX(var(--s,0));transform-origin:left;border-radius:2px}
+.stamp{position:relative;display:inline-block;padding-inline:.12em;z-index:0}
+.stamp::before{content:"";position:absolute;inset:.04em -.06em;background:var(--red);z-index:-1;opacity:var(--st,0);transform:rotate(-2deg) scale(calc(1.35 - .35 * var(--st,0)));box-shadow:0 0 0 2px var(--red)}
+.xi footer{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-soft)}
+.thesis-foot{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:end}
+.coda{display:flex;flex-direction:column;gap:10px;font-size:15px;opacity:var(--c,1)}
+.coda .yr{font-family:var(--f-display);font-weight:900;font-size:20px;margin-right:8px;font-variant-numeric:lining-nums}
+.btn{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;font-family:var(--f-text);font-weight:700;font-size:15px;letter-spacing:.04em;text-decoration:none;padding:11px 18px;border:1.5px solid currentColor;background:transparent;color:inherit;cursor:pointer;border-radius:2px;transition:background-color .2s,color .2s}
+.btn:hover{background:var(--chalk);color:var(--ink)}
+.thesis .hook{opacity:.9}
+
+/* ---------- Afterword ---------- */
+.after{background:var(--night);color:var(--chalk);padding-inline:var(--gutter);padding-block:120px 40px}
+.after .wide{display:flex;flex-direction:column;gap:clamp(56px,8vw,96px)}
+.after h2{font-size:clamp(36px,5.6vw,80px);font-weight:900}
+.after h3{font-size:clamp(26px,2.8vw,36px)}
+.lead{display:flex;flex-direction:column;gap:16px;max-width:900px}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:clamp(24px,4vw,56px);border-top:3px double var(--chalk-soft);padding-top:28px}
+.lab-head{display:flex;flex-direction:column;gap:14px}
+.lab-head p{color:var(--chalk-soft);max-width:40ch;font-size:16px}
+.why{font-size:14px;color:var(--chalk-soft);border-left:1px solid var(--chalk-soft);padding-left:12px}
+.qs{display:flex;flex-direction:column;gap:8px}
+.qs button{font:inherit;font-size:15.5px;text-align:left;color:var(--chalk);background:transparent;border:1px solid #4A463E;padding:10px 14px;cursor:pointer;border-radius:2px;line-height:1.35}
+.qs button[aria-pressed="true"]{border-color:var(--chalk);background:#1E1C19}
+.panel{display:flex;flex-direction:column;gap:20px;background:#1A1916;border:1px solid #38352F;padding:clamp(18px,3vw,32px)}
+.read{display:grid;grid-template-columns:110px minmax(0,1fr);gap:22px;align-items:start;min-height:200px}
+.mini{width:110px;height:110px}
+.stop-name{font-family:var(--f-display);font-weight:700;font-size:24px;line-height:1.15}
+.stop-text{margin-top:10px;font-size:17px;line-height:1.6}
+.badge[hidden]{display:none}
+.badge{display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--red-bright);color:var(--red-bright)}
+.range{display:flex;flex-direction:column;gap:8px}
+.range input{width:100%;accent-color:var(--red-bright);height:28px;cursor:pointer}
+.ticks{display:grid;grid-template-columns:repeat(3,1fr);font-size:13px}
+.ticks button{font:inherit;color:var(--chalk-soft);background:none;border:0;padding:4px 0;cursor:pointer;text-align:center}
+.ticks button:first-child{text-align:left}.ticks button:last-child{text-align:right}
+.ticks button.on{color:var(--chalk);text-decoration:underline;text-underline-offset:4px}
+.lessons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.4vw,28px)}
+.lesson{display:flex;flex-direction:column;gap:12px;padding-top:16px;border-top:1px solid var(--chalk-soft)}
+.lesson .ch{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-bright)}
+.lesson p{font-size:16px;line-height:1.6}
+.lesson .ex{font-size:15px;color:var(--chalk-soft)}
+.lesson .ex b{color:var(--chalk);font-weight:700}
+.lesson a{font-size:14px;letter-spacing:.04em;margin-top:auto;align-self:flex-start;text-underline-offset:4px}
+.quiz{display:flex;flex-direction:column;gap:22px}
+.quiz-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
+.quiz-head p{color:var(--chalk-soft);font-size:15px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.flip{position:relative;perspective:900px;min-height:230px}
+.face{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;padding:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .55s cubic-bezier(.3,.7,.2,1);border-radius:2px}
+.front{background:var(--card);color:var(--ink);font:inherit;text-align:left;border:0;cursor:pointer;width:100%}
+.front .n{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.front .q{font-family:var(--f-display);font-weight:700;font-size:19px;line-height:1.25}
+.front .tap{margin-top:auto;font-size:13px;color:var(--red)}
+.back{background:#221F1B;border:1px solid #4A463E;transform:rotateY(180deg);font-size:15px;line-height:1.5}
+.flip.on .front{transform:rotateY(-180deg)}
+.flip.on .back{transform:rotateY(0)}
+.verdict{font-family:var(--f-display);font-weight:900;font-size:24px}
+.verdict.t{color:#8FC79A}.verdict.f{color:var(--red-bright)}
+.back .row{margin-top:auto;display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.back .row button{font:inherit;color:var(--chalk-soft);background:none;border:0;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+.close{max-width:820px;font-family:var(--f-display);font-style:italic;font-weight:500;font-size:clamp(22px,2.4vw,30px);line-height:1.35}
+.foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:32px;border-top:3px double var(--chalk-soft);padding-top:24px;font-size:14px;color:var(--chalk-soft)}
+.foot h4{margin:0 0 8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk)}
+.foot ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.fill{border-bottom:1px dashed var(--chalk-soft);color:var(--chalk)}
+.foot .btn{margin-top:16px;font-size:14px}
+
+/* hero desk */
+.desk{position:absolute;left:-16%;width:132%;top:64%;height:auto;pointer-events:none}
+/* café chess pieces */
+.pieces{position:absolute;left:1%;bottom:13%;width:24%;height:auto;color:var(--ink);opacity:.5;pointer-events:none}
+/* thesis notebook page */
+.page{position:relative;align-self:flex-start;max-width:min(100%,760px);background:#E8E0CD;color:#2A251E;padding:14px 26px 14px 58px;transform:rotate(-1.1deg);box-shadow:0 22px 40px -22px rgba(0,0,0,.8);
+  font-size:clamp(15px,1.55vw,22px);
+  background-image:linear-gradient(90deg,transparent 40px,rgba(179,38,30,.55) 40px 41px,transparent 41px),repeating-linear-gradient(transparent 0 calc(1.75em - 1px),rgba(60,90,130,.22) calc(1.75em - 1px) 1.75em);
+  background-position:0 0,0 14px}
+.page-lbl{position:absolute;top:-22px;left:0;font-family:var(--f-note);font-size:11px;letter-spacing:.04em;color:var(--chalk-soft);transform:rotate(1.1deg);transform-origin:left}
+.page .manu{font-size:1em;color:#2A251E}
+.page .caret::before,.page .aber,.page .aber-note{color:var(--red)}
+/* Manchester interlude */
+.interlude{background:var(--paper);color:var(--ink);padding-block:clamp(48px,8vw,104px) clamp(56px,8vw,112px)}
+.plate-img{position:relative;overflow:hidden;height:clamp(240px,42vw,640px);border-block:3px double var(--ink)}
+.plate-img img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;object-position:50% 60%;display:block;max-width:none}
+.plate-cap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(20px,4vw,64px);padding-inline:var(--gutter);padding-block:24px 0;max-width:1180px;margin-inline:auto;align-items:start}
+.plate-cap h2{font-size:clamp(32px,4vw,56px);margin-top:8px}
+.plate-cap p{max-width:52ch}
+.plate-cap .src{margin-top:10px;display:block}
+/* custom scrollbar: margin ruler with chapter ticks */
+html{scrollbar-width:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
+.rail{position:fixed;right:0;top:calc(env(safe-area-inset-top,0px) + 58px);bottom:18px;width:30px;z-index:45;color:var(--cur-ink);touch-action:none;cursor:pointer;user-select:none;-webkit-user-select:none;transition:color .35s}
+.rail::before{content:"";position:absolute;right:13px;top:0;bottom:0;width:1px;background:currentColor;opacity:.32}
+.tick{position:absolute;right:9px;width:9px;height:1px;background:currentColor;opacity:.7;display:block}
+.tick span{position:absolute;right:16px;top:-.75em;font-size:11px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .2s;padding:1px 6px;background:var(--cur-bg)}
+.rail:hover .tick span,.rail.drag .tick span{opacity:.85}
+.thumb{position:absolute;right:11px;width:5px;border-radius:3px;background:currentColor;transition:width .15s,right .15s}
+.rail:hover .thumb,.rail.drag .thumb{width:9px;right:9px}
+.thumb-lbl{position:absolute;right:30px;transform:translateY(-50%);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;background:var(--cur-bg);border:1px solid currentColor;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none}
+.rail.show .thumb-lbl,.rail.drag .thumb-lbl{opacity:1}
+.rail.show .tick span{opacity:0}
+@media (pointer:fine) and (min-width:861px){.progress{display:none}}
+@media (pointer:coarse),(max-width:860px){.rail{display:none}}
+
+/* ---------- static (narrow, short or reduced-motion) ---------- */
+.static .scene{height:auto}
+.static .stage{position:relative;height:auto;overflow:visible;padding-block:96px 72px}
+.static .beat{opacity:1}
+@media (max-width:860px){
+  .split,.thesis-foot,.lab,.foot{grid-template-columns:minmax(0,1fr)}
+  .lessons{grid-template-columns:minmax(0,1fr)}
+  .hero .split{gap:40px;grid-template-columns:minmax(0,1fr)}
+  .window-art{width:min(82%,340px);margin-right:12%}
+  .meeting{width:100%;max-width:520px;aspect-ratio:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;padding:12px 0}
+  .meeting .plate,.meeting .note,.meeting .seal{position:relative;inset:auto;left:auto;right:auto;top:auto;bottom:auto;width:auto;transform:none!important;opacity:1!important}
+  .meeting .note,.meeting .seal{grid-column:1/-1}
+  .pieces{display:none}
+  .plate-cap{grid-template-columns:minmax(0,1fr)}
+  .desk{top:68%}
+  .read{grid-template-columns:minmax(0,1fr)}
+  .mini{width:84px;height:84px}
+}
+@media (prefers-reduced-motion:reduce){
+  .lamp{animation:none}
+  .face{transition:none}
+}
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="bar" id="bar">
+  <div class="bar-in">
+    <span class="bar-title">Tiếng gõ của thực tiễn</span>
+    <nav aria-label="Các chương">
+      <a href="#paris" data-k="paris">Mở đầu</a>
+      <a href="#regence" data-k="regence">I. Café de la Régence</a>
+      <a href="#hegel" data-k="hegel">II. Lật ngược Hegel</a>
+      <a href="#luan-de-11" data-k="luan-de-11">III. Luận đề 11</a>
+      <a href="#hau-ky" data-k="hau-ky">Hậu ký</a>
+    </nav>
+    <div class="bar-right">
+      <span class="bar-now" id="barNow">Mở đầu</span>
+      <button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Bật âm thanh"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="snd-t">Âm thanh: tắt</span></button>
+    </div>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<div class="rail" id="rail" aria-hidden="true">
+  <div class="thumb" id="thumb"></div>
+  <div class="thumb-lbl" id="thumbLbl">Mở đầu</div>
+</div>
+
+<main>
+<!-- ============ 0. HERO ============ -->
+<section class="scene" id="paris" data-scene="hero" style="--len:230" aria-labelledby="h-paris">
+  <div class="stage hero">
+    <div class="wide split">
+      <div class="copy">
+        <div class="folio"><span>MLN111 · Triết học Mác – Lênin</span><span>Paris, 1844</span></div>
+        <p class="eyebrow">Chương mở đầu</p>
+        <h1 id="h-paris">Tiếng gõ của thực tiễn<i>Từ phòng đọc Paris đến cải tạo thế giới</i></h1>
+        <div class="beats">
+          <p class="beat" data-a="0" data-b=".36">Karl Marx, 26 tuổi, đang sống lưu vong ở Paris. Trên bàn làm việc của ông là sách của Adam Smith, David Ricardo và một bản thảo còn dang dở về <em>lao động bị tha hóa</em>.</p>
+          <p class="beat" data-a=".36" data-b=".66">Báo chí đưa tin thợ dệt vùng Silesia nổi dậy vì đói và bị quân đội Phổ đàn áp. Ngay dưới cửa sổ, thợ thủ công Paris vẫn làm lụng từ lúc trời chưa sáng cho tới khi đèn đường đã lên.</p>
+          <p class="beat" data-a=".66" data-b="2">Các hệ thống triết học đồ sộ đủ sức <span class="mark" id="mark">giải thích<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6 C 25 2, 55 9, 98 4"/></svg></span> nỗi khổ ấy, nhưng chưa hệ thống nào làm nó vơi đi.</p>
+        </div>
+        <p class="cue">Cuộn để lật trang ↓ <span class="cue-snd">· Bật âm thanh ở góc trên để nghe nhạc nền</span></p>
+      </div>
+      <figure class="window-art" id="windowArt" aria-hidden="true">
+        <div class="win">
+          <canvas id="rain"></canvas>
+          <svg class="roofs" id="roofs" viewBox="0 0 400 200" preserveAspectRatio="xMidYMax meet">
+            <path fill="#171512" d="M0 200V122h34v-18l18-22h52l18 22v16h16V92h9V72h12v20h8l20-30h60l18 28v20h20V86h10V66h12v20h8v14l16-20h37v-8h10v8h11v120z"/>
+            <g fill="#D9B262" opacity=".75"><rect x="62" y="108" width="7" height="10"/><rect x="88" y="108" width="7" height="10"/><rect x="214" y="98" width="7" height="10"/><rect x="246" y="118" width="7" height="10"/><rect x="356" y="104" width="7" height="10"/><rect x="18" y="146" width="7" height="10"/><rect x="300" y="140" width="7" height="10"/></g>
+          </svg>
+          <svg class="frame" viewBox="0 0 400 500" preserveAspectRatio="none">
+            <g fill="#CFC7B5" stroke="#1C1A16" stroke-width="1.5">
+              <rect x="192" y="0" width="16" height="500"/>
+              <rect x="0" y="240" width="400" height="14"/>
+            </g>
+          </svg>
+        </div>
+        <div class="lamp"></div>
+        <svg class="desk" viewBox="0 0 520 170">
+          <defs>
+            <pattern id="grainW" width="7" height="5" patternUnits="userSpaceOnUse"><path d="M0 2.5H7" stroke="#1C1A16" stroke-width=".7" opacity=".45"/></pattern>
+            <pattern id="hatchQ" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><path d="M0 0V3" stroke="#1C1A16" stroke-width=".8"/></pattern>
+          </defs>
+          <path d="M0 96H520V132H0Z" fill="#7A6549"/><path d="M0 96H520V132H0Z" fill="url(#grainW)"/>
+          <path d="M0 132H520V170H0Z" fill="#2D261E"/><path d="M0 132H520" stroke="#1C1A16" stroke-width="2.5"/><path d="M0 96H520" stroke="#1C1A16" stroke-width="1.2"/>
+          <g stroke="#1C1A16" stroke-width="1.2">
+            <rect x="36" y="100" width="136" height="22" fill="#6B2A22"/><rect x="164" y="100" width="8" height="22" fill="#E8DFCB"/>
+            <rect x="46" y="78" width="120" height="22" fill="#2F3C34"/><rect x="158" y="78" width="8" height="22" fill="#E8DFCB"/>
+            <rect x="54" y="60" width="100" height="18" fill="#4B3D2B"/><rect x="146" y="60" width="8" height="18" fill="#E8DFCB"/>
+          </g>
+          <g font-family="Old Standard TT, Georgia, serif" font-size="10" letter-spacing="2" fill="#EDE3CC" font-weight="700">
+            <text x="54" y="115">A. SMITH</text><text x="62" y="93">D. RICARDO</text><text x="66" y="73">HEGEL</text>
+          </g>
+          <g stroke="#1C1A16" stroke-width="1">
+            <path d="M206 104L338 99L356 126L192 130Z" fill="#E4DCC8"/>
+            <path d="M214 101L342 97L352 122L204 126Z" fill="#F3EEE2"/>
+          </g>
+          <g stroke="#1C1A16" stroke-width=".9" fill="none" opacity=".7">
+            <path d="M224 105c10-2 18 1 28-1s14 2 26-1 18 1 30-1 10 0 18-1"/>
+            <path d="M222 110c12-1 20 1 30-1s18 2 28-1 16 1 30-1"/>
+            <path d="M220 115c14-2 22 1 34-1s16 2 26-1 18 1 24-1"/>
+            <path d="M218 120c10-1 22 1 30-1s14 1 22-1"/>
+          </g>
+          <text x="318" y="121" font-family="Homemade Apple, cursive" font-size="9" fill="#1C1A16" transform="rotate(-2 318 121)">1844</text>
+          <g stroke="#1C1A16" stroke-width="1.2">
+            <path d="M392 120V98h30v22z" fill="#1F1C18"/><ellipse cx="407" cy="98" rx="15" ry="4" fill="#3A342C"/><ellipse cx="407" cy="120" rx="15" ry="3.5" fill="#1F1C18"/>
+            <path d="M404 97C420 70 446 38 482 10C470 34 448 62 410 98Z" fill="#E8E0CD"/>
+            <path d="M404 97C420 70 446 38 482 10C470 34 448 62 410 98Z" fill="url(#hatchQ)" opacity=".5"/>
+            <path d="M406 98L478 14" fill="none"/>
+          </g>
+        </svg>
+        <div class="gazette" id="gazette">
+          <div class="g-mast">Vorwärts!</div>
+          <div class="g-date"><span>Paris</span><span>1844</span></div>
+          <div class="g-head">Thợ dệt Silesia nổi dậy</div>
+          <div class="g-cols"></div>
+          <div class="g-note">minh họa tái hiện</div>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERLUDE: MANCHESTER ============ -->
+<section class="interlude" id="manchester" aria-labelledby="h-man">
+  <div class="plate-img" id="plateImg">
+    <img id="manImg" src="img/manchester.webp" width="1800" height="760" loading="eager" alt="Minh họa in bán sắc: các xưởng sợi nhiều tầng, ống khói nhả khói và dãy nhà công nhân bên kênh đào.">
+  </div>
+  <div class="plate-cap">
+    <div>
+      <p class="eyebrow">Cùng lúc ấy · Manchester, 1842–1844</p>
+      <h2 id="h-man">Thành phố ống khói</h2>
+    </div>
+    <div>
+      <p>Engels đến đây từ cuối năm 1842 để làm việc cho hãng sợi Ermen &amp; Engels, nơi cha ông góp vốn. Ngoài giờ ở văn phòng, ông lặn lội khắp các khu lao động, ghi lại tận mắt những gì mình chứng kiến.</p>
+      <span class="src">Minh họa tái hiện, không phải ảnh tư liệu.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ I. CAFÉ ============ -->
+<section class="scene" id="regence" data-scene="cafe" style="--len:280" aria-labelledby="h-regence">
+  <div class="stage cafe">
+    <div class="wide split">
+      <div class="copy">
+        <p class="eyebrow">Chương I · 28 tháng 8, 1844 · Café de la Régence</p>
+        <h2 id="h-regence" style="font-size:clamp(36px,4.8vw,68px)">Người đến từ bụi than</h2>
+        <p class="deck">Mười ngày ở Paris đủ để hai người từng quen sơ trở thành cộng sự suốt đời.</p>
+        <div class="beats">
+          <p class="beat" data-a="0" data-b=".34">Friedrich Engels, 23 tuổi, ghé qua Paris trên đường từ Manchester về Đức, sau gần hai năm sống giữa khói bụi xưởng sợi.</p>
+          <p class="beat" data-a=".34" data-b=".72">Engels không đem đến những định đề trừu tượng. Hành trang của ông là những trang ghi chép về nhà ở, giờ làm, bệnh tật của công nhân, sau này thành cuốn <em>Tình cảnh giai cấp công nhân Anh</em> (1845).</p>
+          <p class="beat" data-a=".72" data-b="2">Marx nhận ra: muốn hiểu một xã hội, trước hết phải xem con người trong xã hội ấy lao động và sản xuất như thế nào.</p>
+        </div>
+        <p class="margin-note">Thật ra hai người đã gặp nhau một lần ở Cologne năm 1842, nhưng buổi gặp ấy khá lạnh nhạt.</p>
+        <p class="hook"><b>Liên hệ MLN111</b>Thực tiễn là cơ sở của nhận thức: lý luận của Marx rẽ sang hướng mới khi va chạm với hiện thực đời sống công nhân.</p>
+      </div>
+      <div class="meeting" id="meeting">
+        <div class="board" aria-hidden="true"></div>
+        <svg class="pieces" viewBox="0 0 130 100" aria-hidden="true">
+          <path fill="currentColor" d="M8 98H52V90H46L42 62H46V56H40C44 50 44 42 38 38H33V30H39V25H33V18H27V25H21V30H27V38H22C16 42 16 50 20 56H14V62H18L14 90H8Z"/>
+          <path fill="currentColor" d="M72 98H118V90H110C109 82 106 76 108 70C112 58 116 48 112 36C108 24 98 16 84 14L82 6L76 14C70 18 66 26 68 32L62 44C60 48 64 53 69 51L80 46C82 52 76 60 74 70C73 78 76 84 78 90H72Z"/>
+        </svg>
+        <div class="plate p-marx" id="pMarx">
+          <span class="who">K. Marx</span><span class="age">26 tuổi · triết học, luật</span>
+          <span class="route">Trier → Berlin → Cologne → Paris</span>
+          <span class="carry">hành trang: bản thảo kinh tế – triết học 1844</span>
+        </div>
+        <div class="plate p-engels" id="pEngels">
+          <span class="who">F. Engels</span><span class="age">23 tuổi · thương mại, xưởng sợi</span>
+          <span class="route">Barmen → Bremen → Manchester → Paris</span>
+          <span class="carry">hành trang: sổ ghi chép từ khu công nhân</span>
+        </div>
+        <div class="note n1"><b>Ghi chép · Nhà ở</b>Dãy nhà ổ chuột ven sông Medlock, nơi người Ireland nghèo sống chen chúc.</div>
+        <div class="note n2"><b>Ghi chép · Nhà máy</b>Ca làm dài trong xưởng sợi; trẻ em đứng máy cạnh người lớn.</div>
+        <div class="note n3"><b>Ghi chép · Sức khỏe</b>Ở khu công nhân, người ta ốm đau và chết sớm hơn hẳn khu nhà giàu trong cùng thành phố.</div>
+        <div class="seal" id="seal">Tác phẩm chung đầu tiên<strong>Gia đình thần thánh · 1845</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ II. HEGEL ============ -->
+<section class="scene" id="hegel" data-scene="hegel" style="--len:300" aria-labelledby="h-hegel">
+  <div class="stage">
+    <canvas class="dust" id="dust" aria-hidden="true"></canvas>
+    <div class="wide" style="display:flex;flex-direction:column;gap:22px">
+      <div class="split">
+        <div class="copy">
+          <p class="eyebrow">Chương II · 1844–1846 · Bước ngoặt</p>
+          <h2 id="h-hegel" style="font-size:clamp(34px,4.4vw,62px)">Kéo phép biện chứng xuống mặt đất</h2>
+          <p class="deck">Hegel thấy thế giới không ngừng vận động. Marx hỏi tiếp: điều gì khiến nó vận động?</p>
+          <div class="beats">
+            <p class="beat" data-a="0" data-b=".34">Với Hegel, lịch sử là quá trình <em>Ý niệm tuyệt đối</em> tự nhận thức về chính nó. Thế giới vật chất chỉ là cái vỏ bên ngoài.</p>
+            <p class="beat" data-a=".34" data-b=".7">Marx giữ lại hạt nhân hợp lý trong đó: mọi sự vật đều vận động, phát triển nhờ mâu thuẫn bên trong. Còn nền móng thì ông xây lại từ đầu.</p>
+            <p class="beat" data-a=".7" data-b="2">Không phải ý thức quyết định đời sống, mà chính đời sống quyết định ý thức.<cite>Hệ tư tưởng Đức, 1845–1846</cite></p>
+          </div>
+        </div>
+        <div class="pyr-wrap">
+          <svg class="pyr" id="pyr" viewBox="0 0 460 420" role="img" aria-label="Kim tự tháp đứng trên đỉnh Ý niệm tuyệt đối được xoay lại, đứng trên đáy là cơ sở hạ tầng kinh tế; kiến trúc thượng tầng ở trên và tác động trở lại.">
+            <defs>
+              <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+              <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+              <pattern id="earthH" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="currentColor" stroke-width="1" opacity=".35"/></pattern>
+              <marker id="ahr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E2584B"/></marker>
+            </defs>
+            <g id="clouds" fill="currentColor" opacity=".18" filter="url(#blur)">
+              <ellipse cx="120" cy="360" rx="90" ry="22"/><ellipse cx="300" cy="372" rx="110" ry="20"/><ellipse cx="220" cy="385" rx="70" ry="14"/>
+            </g>
+            <g id="earth" opacity="0">
+              <rect x="20" y="357" width="420" height="50" fill="url(#earthH)"/>
+              <g fill="currentColor">
+                <circle cx="110" cy="382" r="13" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="4.2 2.6"/>
+                <circle cx="110" cy="382" r="6"/>
+                <path d="M196 398V380L208 372V380L220 372V380L232 372V380L244 372V398Z"/>
+                <rect x="248" y="364" width="7" height="34"/>
+                <path d="M340 398c-1-10 1-20 0-30M340 376c-6-4-9-10-9-16 6 3 9 9 9 16zM340 376c6-4 9-10 9-16-6 3-9 9-9 16zM340 386c-6-4-9-10-9-16 6 3 9 9 9 16zM340 386c6-4 9-10 9-16-6 3-9 9-9 16z" stroke="currentColor" stroke-width="1.6"/>
+              </g>
+              <text class="lbl-side" x="230" y="416" text-anchor="middle" fill="currentColor" font-size="10.5">nền tảng: sản xuất vật chất</text>
+            </g>
+            <line id="ground" x1="20" y1="356" x2="440" y2="356" stroke="currentColor" stroke-width="2" opacity="0"/>
+            <g id="tri" style="transform-origin:230px 210px">
+              <path d="M70 80H390L230 340Z" fill="currentColor" fill-opacity=".08" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M110 145H350" stroke="currentColor" stroke-opacity=".35" stroke-width="1"/>
+            </g>
+            <g id="labA" fill="currentColor" text-anchor="middle">
+              <text class="lbl-sm" x="230" y="115">thế giới vật chất (cái vỏ bên ngoài)</text>
+              <text class="lbl-big" x="230" y="378">Ý NIỆM TUYỆT ĐỐI</text>
+            </g>
+            <g id="labB" fill="currentColor" text-anchor="middle" opacity="0">
+              <text class="lbl-big" x="230" y="34">KIẾN TRÚC THƯỢNG TẦNG</text>
+              <text class="lbl-sm" x="230" y="56">chính trị · pháp luật · đạo đức · triết học</text>
+              <text class="lbl-big" x="230" y="296">CƠ SỞ HẠ TẦNG</text>
+              <text class="lbl-sm" x="230" y="318">lực lượng sản xuất + quan hệ sản xuất</text>
+            </g>
+            <g id="arrUp" opacity="0" color="currentColor">
+              <path d="M34 330V96" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah)"/>
+              <text class="lbl-side" fill="currentColor" transform="translate(22 213) rotate(-90)" text-anchor="middle">quyết định</text>
+            </g>
+            <g id="arrDown" opacity="0">
+              <path d="M426 96V330" fill="none" stroke="#E2584B" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahr)"/>
+              <text class="lbl-side" fill="#E2584B" transform="translate(444 213) rotate(90)" text-anchor="middle">tác động trở lại</text>
+            </g>
+          </svg>
+          <p class="pyr-cap">Năm 1873, trong Lời bạt tái bản lần thứ hai bộ <em>Tư bản</em>, Marx viết rằng phép biện chứng ở Hegel bị đặt lộn ngược và cần được dựng đứng lại. Cặp khái niệm cơ sở hạ tầng – kiến trúc thượng tầng được ông trình bày hoàn chỉnh năm 1859.</p>
+        </div>
+      </div>
+      <div class="works" aria-label="Mốc tác phẩm">
+        <span><b>1844</b>Bản thảo kinh tế – triết học</span>
+        <span><b>1845</b>Gia đình thần thánh · Luận cương về Feuerbach</span>
+        <span><b>1846</b>Hệ tư tưởng Đức (chưa được in khi hai ông còn sống)</span>
+        <span class="hook" style="border:0;padding:0;margin-left:auto"><b>Liên hệ MLN111</b>Vật chất quyết định ý thức; ý thức có tác động trở lại vật chất.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ III. THESIS 11 ============ -->
+<section class="scene" id="luan-de-11" data-scene="thesis" style="--len:300" aria-labelledby="h-xi">
+  <div class="stage thesis">
+    <div class="wide thesis-in">
+      <p class="eyebrow" id="h-xi">Chương III · Brussels, mùa xuân 1845</p>
+      <div class="page">
+      <span class="page-lbl">Sổ ghi chép của Marx, 1844–1847 · tái hiện</span>
+      <div class="manu" aria-hidden="true" lang="de">
+        <span class="hand" id="hl0">Die Philosophen haben die Welt nur</span>
+        <span class="hand" id="hl1">verschieden interpretirt, es kömmt <span class="caret" id="caret"><span class="aber">aber</span></span>drauf an</span>
+        <span class="hand" id="hl2">sie zu verändern.</span>
+        <span class="aber-note" id="aberNote">Chữ „aber” (song) do Engels thêm vào khi in năm 1888; bản viết tay của Marx không có.</span>
+      </div>
+      </div>
+      <blockquote class="xi" cite="Luận cương về Feuerbach, luận đề 11">
+        <p><span class="ph">Các nhà triết học</span> <span class="ph">đã chỉ <span class="strike" id="strike">giải thích</span> thế giới</span> <span class="ph">bằng nhiều cách khác nhau,</span> <span class="ph">song vấn đề là <span class="stamp" id="stamp">cải tạo</span> thế giới.</span></p>
+        <footer>Luận cương về Feuerbach · luận đề 11</footer>
+      </blockquote>
+      <div class="thesis-foot">
+        <div class="beats">
+          <p class="beat" data-a="0" data-b=".55">Mười một luận đề được Marx viết vội trong sổ tay, vốn không định đem in.</p>
+          <p class="beat" data-a=".55" data-b=".8">Luận đề 2 trả lời câu hỏi về chân lý: một tư tưởng đúng hay sai không thể phân xử bằng tranh luận suông, mà phải được chứng minh trong thực tiễn.</p>
+          <p class="beat" data-a=".8" data-b="2">Từ đó, luận đề 11 đi đến kết luận: triết học phải trở thành công cụ để thay đổi hiện thực.</p>
+        </div>
+        <div class="coda" id="coda">
+          <p><span class="yr">1848</span><em>Tuyên ngôn của Đảng Cộng sản</em> ra đời, đưa tư tưởng ấy vào phong trào công nhân.</p>
+          <p><span class="yr">1888</span>Engels công bố Luận cương lần đầu tiên, năm năm sau khi Marx qua đời.</p>
+          <p class="hook"><b>Liên hệ MLN111</b>Thực tiễn là cơ sở, động lực, mục đích của nhận thức và là tiêu chuẩn của chân lý.</p>
+          <a class="btn" href="#lat-nguoc">Nhìn một câu hỏi qua ba lăng kính →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AFTERWORD ============ -->
+<section class="after" id="hau-ky" aria-labelledby="h-after">
+  <div class="wide">
+    <div class="lead">
+      <p class="eyebrow" style="color:var(--red-bright)">Hậu ký · Ba bài học</p>
+      <h2 id="h-after">Bạn đang giải thích thế&nbsp;giới, hay đang cải tạo nó?</h2>
+    </div>
+
+    <div class="lab" id="lat-nguoc">
+      <div class="lab-head">
+        <h3>Ba lăng kính</h3>
+        <p>Chọn một câu hỏi rồi kéo thanh trượt để xem mỗi lập trường triết học giải thích nó ra sao.</p>
+        <div class="qs" id="qs" role="group" aria-label="Câu hỏi"></div>
+        <p class="why">Vì sao lại có ba nấc? Giáo trình tách bạch chủ nghĩa duy vật siêu hình với duy vật biện chứng; nếu chỉ đặt duy tâm cạnh duy vật thì phép so sánh sẽ khập khiễng.</p>
+      </div>
+      <div class="panel">
+        <div class="read" aria-live="polite">
+          <svg class="mini" id="mini" viewBox="0 0 120 120" aria-hidden="true"></svg>
+          <div>
+            <div class="stop-name" id="stopName"></div>
+            <p class="stop-text" id="stopText"></p>
+            <span class="badge" id="badge" hidden>Giáo trình MLN111 · Chương 2 và 3</span>
+          </div>
+        </div>
+        <div class="range">
+          <label for="lens" class="eyebrow" style="font-size:11.5px;color:var(--chalk-soft)">Lập trường</label>
+          <input type="range" id="lens" min="0" max="2" step="1" value="0">
+          <div class="ticks" id="ticks">
+            <button type="button" data-v="0">Duy tâm</button>
+            <button type="button" data-v="1">Duy vật siêu hình</button>
+            <button type="button" data-v="2">Duy vật biện chứng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lessons">
+      <article class="lesson">
+        <span class="ch">Ứng với chương I và III</span>
+        <h3>Lý luận và thực tiễn</h3>
+        <p>Thực tiễn là cơ sở, động lực, mục đích của nhận thức và là tiêu chuẩn của chân lý. Lý luận quay lại định hướng thực tiễn.</p>
+        <p class="ex"><b>Ví dụ:</b> một kiến trúc hệ thống trông đẹp trên sơ đồ chỉ được kiểm chứng khi chạy thật và đo đạc được; một mô hình dự báo chỉ đáng tin khi khớp với số liệu thực tế.</p>
+        <a href="#luan-de-11">Xem lại cảnh Luận đề 11</a>
+      </article>
+      <article class="lesson">
+        <span class="ch">Ứng với chương II</span>
+        <h3>Thế giới quan duy vật biện chứng</h3>
+        <p>Vật chất quyết định ý thức, còn ý thức tác động trở lại vật chất. Tồn tại xã hội quyết định ý thức xã hội. Mâu thuẫn là nguồn gốc của sự vận động và phát triển.</p>
+        <p class="ex"><b>Ví dụ:</b> công nghệ thay đổi trước, sau đó quan hệ lao động và luật pháp mới dần điều chỉnh theo, như chuyện làm việc qua nền tảng số hay làm việc từ xa.</p>
+        <a href="#hegel">Xem lại cảnh lật ngược Hegel</a>
+      </article>
+      <article class="lesson">
+        <span class="ch">Ứng với chương mở đầu</span>
+        <h3>Bản chất, hiện tượng và con người</h3>
+        <p>Phải nhìn xuyên qua hiện tượng để nắm được bản chất. Đích đến cuối cùng của lý luận là giải phóng con người khỏi sự tha hóa.</p>
+        <p class="ex"><b>Ví dụ:</b> truy tìm nguyên nhân gốc của một lỗi thay vì chỉ vá triệu chứng; tự hỏi một chỉ số KPI đang phản ánh hiện tượng hay bản chất của công việc.</p>
+        <a href="#paris">Xem lại cảnh Paris, 1844</a>
+      </article>
+    </div>
+
+    <div class="quiz">
+      <div class="quiz-head">
+        <h3>Đúng hay sai? Lật thẻ để kiểm tra</h3>
+        <p id="score">Đã lật 0/5 thẻ</p>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div>
+
+    <p class="close">Năm 1844, Marx viết về lao động bị tha hóa: người lao động làm ra sản phẩm, rồi chính sản phẩm ấy quay lại chi phối họ. Hiểu được điều đó mới là bước đầu; thay đổi nó mới là việc khó.</p>
+
+    <footer class="foot">
+      <div>
+        <h4>Thực hiện</h4>
+        <p style="margin-bottom:10px">Nhạc nền và tiếng động được tổng hợp trực tiếp trong trình duyệt bằng Web Audio, không dùng bản ghi có bản quyền.</p>
+        <p>Nhóm <span class="fill">[tên nhóm]</span> · Lớp <span class="fill">[mã lớp]</span><br>Giảng viên hướng dẫn: <span class="fill">[họ tên]</span><br>Môn MLN111 · Đại học FPT</p>
+        <a class="btn" href="#paris" style="color:var(--chalk)">↑ Cuộn lại từ đầu</a>
+      </div>
+      <div>
+        <h4>Tài liệu tham khảo</h4>
+        <ol>
+          <li>Bộ GD&amp;ĐT, <em>Giáo trình Triết học Mác – Lênin</em> (bậc đại học hệ không chuyên lý luận chính trị), NXB Chính trị quốc gia Sự thật. Chương 2, Chương 3.</li>
+          <li>C. Mác, Ph. Ăngghen, <em>Luận cương về Feuerbach</em>; <em>Hệ tư tưởng Đức</em>. Toàn tập, t.3, NXB Chính trị quốc gia, 1995.</li>
+          <li>C. Mác, <em>Bản thảo kinh tế – triết học năm 1844</em>. Toàn tập, t.42.</li>
+          <li>Ph. Ăngghen, <em>Tình cảnh giai cấp công nhân Anh</em>; C. Mác, Ph. Ăngghen, <em>Gia đình thần thánh</em>. Toàn tập, t.2.</li>
+          <li>C. Mác, <em>Tư bản</em>, quyển I, Lời bạt tái bản lần thứ hai (1873). Toàn tập, t.23.</li>
+          <li>C. Mác, <em>Góp phần phê phán khoa kinh tế chính trị</em>, Lời tựa (1859). Toàn tập, t.13.</li>
+        </ol>
+      </div>
+    </footer>
+  </div>
+</section>
+</main>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const seg = (p, a, b) => clamp((p - a) / (b - a));
+  const ease = t => t * t * (3 - 2 * t);
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const C = {};
+  ['--paper', '--sepia', '--coal', '--blood', '--night', '--ink', '--chalk'].forEach(k => C[k.slice(2)] = hex(css(k)));
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const rgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
+  const lum = c => (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255;
+
+  const root = document.documentElement;
+  const mq = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches || innerWidth < 860 || innerHeight < 620;
+  let isStatic = mq();
+  root.classList.toggle('static', isStatic);
+
+  const scenes = [...document.querySelectorAll('.scene')];
+  const state = {};
+
+  function paint(stage, col) {
+    stage.style.background = rgb(col);
+    const light = lum(col) < 0.42;
+    stage.classList.toggle('ink-light', light);
+    return { bg: col, ink: light ? C.chalk : C.ink };
+  }
+  function beats(stage, p) {
+    stage.querySelectorAll('.beat').forEach(b => {
+      b.classList.toggle('on', isStatic || (p >= +b.dataset.a && p < +b.dataset.b));
+    });
+  }
+
+  /* ---- scene handlers ---- */
+  const H = {
+    hero(stage, p) {
+      const out = paint(stage, C.paper);
+      beats(stage, p);
+      $('#mark').style.setProperty('--u', isStatic ? 1 : ease(seg(p, .7, .86)));
+      if (isStatic) return out;
+      $('#roofs').style.transform = `translateY(${-p * 18}px)`;
+      const g = ease(seg(p, .3, .52));
+      const gz = $('#gazette');
+      gz.style.opacity = g;
+      gz.style.transform = `translate(${(1 - g) * 40}px, ${(1 - g) * 90 - p * 40}px) rotate(${-3 - (1 - g) * 6}deg)`;
+      $('#windowArt').style.transform = `translateY(${-p * 30}px) scale(${1 + ease(seg(p, .88, 1)) * .08})`;
+      return out;
+    },
+    cafe(stage, p) {
+      const out = paint(stage, mix(C.paper, C.sepia, isStatic ? 1 : ease(seg(p, 0, .8))));
+      beats(stage, p);
+      const q = isStatic ? 1 : p;
+      const m = ease(seg(q, .02, .3));
+      $('#pMarx').style.transform = `translateX(${(1 - m) * -38}%)`;
+      $('#pEngels').style.transform = `translateX(${(1 - m) * 38}%)`;
+      $('#pMarx').style.opacity = $('#pEngels').style.opacity = .3 + .7 * m;
+      [[.34, .46, -3], [.46, .58, 2], [.58, .7, -1.5]].forEach(([a, b, r], i) => {
+        const t = ease(seg(q, a, b));
+        const n = stage.querySelector('.n' + (i + 1));
+        n.style.opacity = t;
+        n.style.transform = `translate(${(1 - t) * 34}%, ${(1 - t) * -70}%) rotate(${r + (1 - t) * 12}deg) scale(${.7 + .3 * t})`;
+      });
+      const s = ease(seg(q, .78, .9));
+      $('#seal').style.opacity = s;
+      $('#seal').style.transform = `scale(${1.08 - .08 * s})`;
+      return out;
+    },
+    hegel(stage, p) {
+      const q = isStatic ? 1 : p;
+      const out = paint(stage, mix(C.sepia, C.coal, ease(seg(q, .18, .58))));
+      beats(stage, p);
+      const turn = ease(seg(q, .3, .68));
+      const wobble = Math.sin(q * 60) * 4 * (1 - seg(q, 0, .3));
+      $('#tri').style.transform = `rotate(${turn * 180 + wobble}deg)`;
+      $('#labA').style.opacity = 1 - seg(q, .32, .46);
+      $('#labB').style.opacity = ease(seg(q, .62, .76));
+      $('#clouds').style.opacity = .18 * (1 - seg(q, .3, .6));
+      $('#ground').style.opacity = seg(q, .55, .7);
+      $('#earth').style.opacity = ease(seg(q, .6, .74));
+      $('#arrUp').style.opacity = ease(seg(q, .74, .84));
+      $('#arrDown').style.opacity = ease(seg(q, .84, .94));
+      state.dust = isStatic ? 0 : seg(q, .3, .8);
+      return out;
+    },
+    thesis(stage, p) {
+      const q = isStatic ? 1 : p;
+      const out = paint(stage, mix(C.coal, C.blood, ease(seg(q, .8, .96))));
+      beats(stage, p);
+      ['#hl0', '#hl1', '#hl2'].forEach((id, i) => {
+        $(id).style.setProperty('--r', 1 - seg(q, .02 + i * .1, .12 + i * .1));
+      });
+      const a = seg(q, .33, .4);
+      ['#caret', '#aberNote'].forEach(id => $(id).style.setProperty('--a', a));
+      stage.querySelectorAll('.ph').forEach((ph, i) => ph.style.setProperty('--o', ease(seg(q, .38 + i * .055, .44 + i * .055))));
+      $('#strike').style.setProperty('--s', ease(seg(q, .62, .69)));
+      $('#stamp').style.setProperty('--st', ease(seg(q, .7, .76)));
+      $('#coda').style.setProperty('--c', .25 + .75 * ease(seg(q, .78, .88)));
+      return out;
+    }
+  };
+
+  /* ---- sound: a small A-minor nocturne + per-chapter ambience, all synthesised ---- */
+  const Sound = (() => {
+    let ctx = null, master, music, rain, murmur, loom, drone, on = false, timer = 0;
+    let nextT = 0, step = 0, scene = 'paris', sp = 0, stamped = false;
+    const BPM = 66, E8 = 60 / BPM / 2;              // eighth-note length
+    // 8-bar loop in 3/4 (6 eighths per bar): Am Dm G C F Dm E E7
+    const BASS = [45, 50, 43, 48, 41, 50, 40, 40];
+    const THIRD = [3, 3, 4, 4, 4, 3, 4, 4];
+    const LH = [0, 7, 12, 'T', 12, 7];
+    const MEL = [
+      [[0, 76, 4], [4, 72, 1], [5, 71, 1]],
+      [[0, 69, 3], [3, 77, 3]],
+      [[0, 74, 4], [4, 71, 1], [5, 67, 1]],
+      [[0, 72, 6]],
+      [[0, 69, 2], [2, 72, 2], [4, 77, 2]],
+      [[0, 76, 2], [2, 74, 2], [4, 77, 2]],
+      [[0, 76, 3], [3, 68, 3]],
+      [[0, 71, 2], [2, 74, 2], [4, 76, 2]]
+    ];
+    const g = v => { const n = ctx.createGain(); n.gain.value = v; return n; };
+    function noiseBuf(brown) {
+      const len = ctx.sampleRate * 3, b = ctx.createBuffer(1, len, ctx.sampleRate), d = b.getChannelData(0);
+      let last = 0;
+      for (let i = 0; i < len; i++) {
+        const w = Math.random() * 2 - 1;
+        if (brown) { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; } else d[i] = w;
+      }
+      return b;
+    }
+    function loopNoise(brown) { const s = ctx.createBufferSource(); s.buffer = noiseBuf(brown); s.loop = true; s.start(); return s; }
+    function irBuf(sec) {
+      const len = ctx.sampleRate * sec, b = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (let c = 0; c < 2; c++) { const d = b.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+      return b;
+    }
+    function init() {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = g(0);
+      const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 3;
+      master.connect(comp); comp.connect(ctx.destination);
+      const verb = ctx.createConvolver(); verb.buffer = irBuf(3.2);
+      const wet = g(.32); verb.connect(wet); wet.connect(master);
+      music = g(0); music.connect(master); music.connect(verb);
+      // rain: filtered white noise
+      rain = g(0);
+      const rhp = ctx.createBiquadFilter(); rhp.type = 'highpass'; rhp.frequency.value = 900;
+      const rlp = ctx.createBiquadFilter(); rlp.type = 'lowpass'; rlp.frequency.value = 6500;
+      loopNoise(false).connect(rhp); rhp.connect(rlp); rlp.connect(rain); rain.connect(master);
+      // café murmur: brown noise in the voice band, gently swelling
+      murmur = g(0);
+      const mbp = ctx.createBiquadFilter(); mbp.type = 'bandpass'; mbp.frequency.value = 480; mbp.Q.value = .7;
+      const mamp = g(.5); loopNoise(true).connect(mbp); mbp.connect(mamp); mamp.connect(murmur); murmur.connect(master); murmur.connect(verb);
+      murmur._amp = mamp;
+      // machines: bus for scheduled clacks and thumps
+      loom = g(0); loom.connect(master); loom.connect(verb);
+      // low drone for thesis 11
+      drone = g(0); drone.connect(master);
+      [55, 82.41].forEach(fq => { const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = fq; const og = g(.5); o.connect(og); og.connect(drone); o.start(); });
+    }
+    function piano(t, midi, vel, dur) {
+      const f = 440 * Math.pow(2, (midi - 69) / 12);
+      const env = ctx.createGain();
+      env.gain.setValueAtTime(0.0001, t);
+      env.gain.linearRampToValueAtTime(vel, t + .01);
+      env.gain.exponentialRampToValueAtTime(vel * .3, t + .4);
+      env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(Math.min(9000, f * 7), t);
+      lp.frequency.exponentialRampToValueAtTime(Math.max(400, f * 1.6), t + dur);
+      [[1, .62, 'triangle'], [2, .22, 'sine'], [3, .09, 'sine'], [4.02, .04, 'sine']].forEach(([h, a, type]) => {
+        const o = ctx.createOscillator(); o.type = type; o.frequency.value = f * h; o.detune.value = (Math.random() - .5) * 5;
+        const og = g(a); o.connect(og); og.connect(lp); o.start(t); o.stop(t + dur + .05);
+      });
+      lp.connect(env); env.connect(music);
+    }
+    function clack(t, accent) {
+      const s = ctx.createBufferSource(); s.buffer = clack.buf || (clack.buf = noiseBuf(false));
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = accent ? 1500 : 2300; bp.Q.value = 4;
+      const e = ctx.createGain(); e.gain.setValueAtTime(accent ? .9 : .55, t); e.gain.exponentialRampToValueAtTime(.001, t + .06);
+      s.connect(bp); bp.connect(e); e.connect(loom); s.start(t, Math.random() * 2, .08);
+    }
+    function thump(t, fq = 70, vol = .9, len = .22, bus) {
+      const o = ctx.createOscillator(); o.frequency.setValueAtTime(fq * 1.8, t); o.frequency.exponentialRampToValueAtTime(fq, t + .05);
+      const e = ctx.createGain(); e.gain.setValueAtTime(vol, t); e.gain.exponentialRampToValueAtTime(.001, t + len);
+      o.connect(e); e.connect(bus || loom); o.start(t); o.stop(t + len + .05);
+    }
+    function clink(t) {
+      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = 2600 + Math.random() * 900;
+      const e = ctx.createGain(); e.gain.setValueAtTime(.06, t); e.gain.exponentialRampToValueAtTime(.0005, t + .35);
+      o.connect(e); e.connect(murmur); o.start(t); o.stop(t + .4);
+    }
+    function schedule() {
+      while (nextT < ctx.currentTime + .35) {
+        const bar = Math.floor(step / 6) % 8, k = step % 6, pass = Math.floor(step / 48);
+        const root = BASS[bar], iv = LH[k] === 'T' ? 12 + THIRD[bar] : LH[k];
+        const lhNote = bar === 7 && k === 3 ? root + 22 : root + iv;    // E7: add the seventh
+        piano(nextT, lhNote, k === 0 ? .16 : .09, E8 * (k === 0 ? 6 : 2.2));
+        MEL[bar].forEach(([at, n, len]) => {
+          if (at !== k) return;
+          if (pass % 2 === 1 && at !== 0) return;                       // second pass: sparser
+          piano(nextT + (Math.random() * .015), n + (pass % 4 === 2 ? 12 : 0), .2, E8 * len + .6);
+        });
+        // machine rhythm (audible only where the loom bus is open)
+        if ([0, 2, 3, 5].includes(k)) clack(nextT, k === 0 || k === 3);
+        if (k === 0 || k === 3) thump(nextT);
+        // café: murmur swells and the odd cup
+        murmur._amp.gain.setTargetAtTime(.35 + Math.random() * .4, nextT, .4);
+        if (Math.random() < .07) clink(nextT + Math.random() * E8);
+        nextT += E8; step++;
+      }
+    }
+    const lvl = (node, v) => node.gain.setTargetAtTime(v, ctx.currentTime, .7);
+    const seg = (p, a, b) => Math.min(1, Math.max(0, (p - a) / (b - a)));
+    function mixFor(id, p) {
+      if (!ctx || !on) return;
+      let m = .55, r = 0, c = 0, l = 0, d = 0;
+      if (id === 'paris') { m = .6; r = .5; }
+      else if (id === 'manchester') { m = .45; r = .1; l = .32; }
+      else if (id === 'regence') { m = .55; c = .55; }
+      else if (id === 'hegel') { m = .5; l = .18 + .4 * seg(p, .3, .8); }
+      else if (id === 'luan-de-11') {
+        m = .6 * (1 - seg(p, .12, .42)) + .62 * seg(p, .82, .96);
+        d = .07 * seg(p, .2, .45) * (1 - seg(p, .82, .96));
+        if (p >= .72 && !stamped) { stamped = true; const t = ctx.currentTime + .02; thump(t, 48, 1.2, .9, master); piano(t, 45, .3, 4); piano(t, 57, .22, 4); piano(t, 64, .2, 4); }
+        if (p < .6) stamped = false;
+      }
+      else if (id === 'hau-ky') { m = .75; }
+      lvl(music, m * .9); lvl(rain, r * .22); lvl(murmur, c * .5); lvl(loom, l * .35); lvl(drone, d);
+    }
+    async function toggle() {
+      if (!ctx) init();
+      on = !on;
+      if (on) {
+        await ctx.resume();
+        nextT = ctx.currentTime + .1;
+        clearInterval(timer); timer = setInterval(schedule, 90); schedule();
+        master.gain.setTargetAtTime(.85, ctx.currentTime, .4);
+        mixFor(scene, sp);
+      } else {
+        master.gain.setTargetAtTime(0, ctx.currentTime, .25);
+        clearInterval(timer);
+        setTimeout(() => { if (!on) ctx.suspend(); }, 900);
+      }
+      return on;
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (!ctx || !on) return;
+      if (document.hidden) { clearInterval(timer); ctx.suspend(); }
+      else { ctx.resume().then(() => { nextT = ctx.currentTime + .1; clearInterval(timer); timer = setInterval(schedule, 90); }); }
+    });
+    return {
+      toggle,
+      scene(id, p) { scene = id; sp = p; mixFor(id, p); }
+    };
+  })();
+  const sndBtn = $('#snd');
+  sndBtn.addEventListener('click', async () => {
+    let state;
+    try { state = await Sound.toggle(); } catch (err) { sndBtn.querySelector('.snd-t').textContent = 'Không phát được âm thanh'; return; }
+    sndBtn.setAttribute('aria-pressed', state ? 'true' : 'false');
+    sndBtn.setAttribute('aria-label', state ? 'Tắt âm thanh' : 'Bật âm thanh');
+    sndBtn.querySelector('.snd-t').textContent = state ? 'Âm thanh: bật' : 'Âm thanh: tắt';
+  });
+
+  /* ---- nav ---- */
+  const labels = { paris: 'Mở đầu', manchester: 'Manchester', regence: 'I. Café de la Régence', hegel: 'II. Lật ngược Hegel', 'luan-de-11': 'III. Luận đề 11', 'hau-ky': 'Hậu ký' };
+  const navLinks = [...document.querySelectorAll('.bar nav a')];
+  let current = '';
+
+  function update() {
+    const vh = innerHeight;
+    let active = null, activeColors = null, activeP = 0;
+    scenes.forEach(s => {
+      const r = s.getBoundingClientRect();
+      if (!isStatic && (r.bottom < -vh * .5 || r.top > vh * 1.5)) return;
+      const total = s.offsetHeight - vh;
+      const p = total > 0 ? clamp(-r.top / total) : (r.top <= 0 ? 1 : 0);
+      const cols = H[s.dataset.scene](s.querySelector('.stage'), p);
+      if (r.top <= vh * .5 && r.bottom > vh * .5) { active = s.id; activeColors = cols; activeP = p; }
+    });
+    const man = $('#manchester').getBoundingClientRect();
+    if (man.top <= vh * .5 && man.bottom > vh * .5) { active = 'manchester'; activeColors = { bg: C.paper, ink: C.ink }; activeP = clamp((vh * .5 - man.top) / man.height); }
+    const after = $('#hau-ky').getBoundingClientRect();
+    if (after.top <= vh * .5) { active = 'hau-ky'; activeColors = { bg: C.night, ink: C.chalk }; }
+    if (active) Sound.scene(active, isStatic ? 1 : activeP);
+    if (activeColors) {
+      root.style.setProperty('--cur-bg', rgb(activeColors.bg));
+      root.style.setProperty('--cur-ink', rgb(activeColors.ink));
+    }
+    if (active && active !== current) {
+      current = active;
+      navLinks.forEach(a => a.setAttribute('aria-current', a.dataset.k === active ? 'true' : 'false'));
+      $('#barNow').textContent = labels[active];
+    }
+    const max = document.documentElement.scrollHeight - vh;
+    $('#progress').style.transform = `scaleX(${max > 0 ? clamp(scrollY / max) : 0})`;
+    // Manchester plate parallax
+    const pi = $('#plateImg').getBoundingClientRect();
+    if (!isStatic && pi.bottom > 0 && pi.top < vh) {
+      const t = clamp((pi.top + pi.height / 2) / vh, -0.5, 1.5) - .5;
+      $('#manImg').style.transform = `translateY(${t * 12}%)`;
+    }
+    railUpdate();
+  }
+
+  /* ---- custom scrollbar (margin ruler) ---- */
+  const rail = $('#rail'), thumb = $('#thumb'), thumbLbl = $('#thumbLbl');
+  const TICKS = [['paris', 'Mở đầu'], ['manchester', 'Manchester'], ['regence', 'I · Café de la Régence'], ['hegel', 'II · Lật ngược Hegel'], ['luan-de-11', 'III · Luận đề 11'], ['hau-ky', 'Hậu ký']];
+  const tickEls = TICKS.map(([id, label]) => {
+    const a = document.createElement('a');
+    a.className = 'tick'; a.href = '#' + id; a.tabIndex = -1;
+    a.innerHTML = `<span>${label}</span>`;
+    rail.appendChild(a);
+    return [a, id];
+  });
+  let geo = { track: 1, th: 28, max: 1 };
+  function railLayout() {
+    const track = rail.clientHeight, doc = document.documentElement.scrollHeight, vh = innerHeight;
+    const max = Math.max(1, doc - vh);
+    const th = Math.max(32, Math.round(track * vh / doc));
+    geo = { track, th, max };
+    thumb.style.height = th + 'px';
+    tickEls.forEach(([a, id]) => {
+      const el = document.getElementById(id);
+      const y = clamp(el.getBoundingClientRect().top + scrollY, 0, max);
+      a.style.top = Math.round(y / max * (track - th) + th / 2) + 'px';
+    });
+  }
+  function railUpdate() {
+    const top = clamp(scrollY / geo.max) * (geo.track - geo.th);
+    thumb.style.transform = `translateY(${top}px)`;
+    thumbLbl.style.top = (top + geo.th / 2) + 'px';
+    if (current) thumbLbl.textContent = (TICKS.find(t => t[0] === current) || [0, ''])[1];
+  }
+  let hideT = 0;
+  addEventListener('scroll', () => {
+    rail.classList.add('show');
+    clearTimeout(hideT); hideT = setTimeout(() => rail.classList.remove('show'), 900);
+  }, { passive: true });
+  let drag = null;
+  rail.addEventListener('pointerdown', e => {
+    if (e.target.closest('.tick')) return;
+    e.preventDefault();
+    const r = rail.getBoundingClientRect();
+    const thumbTop = clamp(scrollY / geo.max) * (geo.track - geo.th);
+    const y = e.clientY - r.top;
+    if (y < thumbTop || y > thumbTop + geo.th) {
+      // jump: centre the thumb under the pointer, then keep dragging from there
+      const target = clamp((y - geo.th / 2) / (geo.track - geo.th)) * geo.max;
+      window.scrollTo({ top: target, behavior: 'auto' });
+    }
+    drag = { y: e.clientY, s: scrollY };
+    rail.classList.add('drag');
+    rail.setPointerCapture(e.pointerId);
+  });
+  rail.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const ratio = geo.max / Math.max(1, geo.track - geo.th);
+    window.scrollTo({ top: drag.s + (e.clientY - drag.y) * ratio, behavior: 'auto' });
+  });
+  const endDrag = e => { if (!drag) return; drag = null; rail.classList.remove('drag'); try { rail.releasePointerCapture(e.pointerId); } catch (_) {} };
+  rail.addEventListener('pointerup', endDrag);
+  rail.addEventListener('pointercancel', endDrag);
+
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
+  addEventListener('resize', () => {
+    const s = mq();
+    if (s !== isStatic) { isStatic = s; root.classList.toggle('static', s); clearInline(); }
+    sizeCanvases(); railLayout(); update();
+  });
+  function clearInline() {
+    document.querySelectorAll('#roofs,#gazette,#windowArt,#manImg').forEach(el => { el.style.transform = ''; el.style.opacity = ''; });
+  }
+
+  /* smooth anchor scrolling */
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const el = document.getElementById(a.getAttribute('href').slice(1));
+    if (!el) return;
+    e.preventDefault();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let y = el.getBoundingClientRect().top + scrollY;
+    if (el.classList.contains('scene') && !isStatic) y += 2;
+    else y -= 60;
+    window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  /* ---- canvases: rain + coal dust ---- */
+  const rain = $('#rain'), dust = $('#dust');
+  const rc = rain.getContext('2d'), dc = dust.getContext('2d');
+  let drops = [], motes = [];
+  function sizeCanvases() {
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    [rain, dust].forEach(cv => {
+      const r = cv.getBoundingClientRect();
+      cv.width = Math.max(1, r.width * dpr); cv.height = Math.max(1, r.height * dpr);
+      cv.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+    });
+    const rr = rain.getBoundingClientRect();
+    drops = Array.from({ length: 110 }, () => ({ x: Math.random() * rr.width * 1.2, y: Math.random() * rr.height, v: 5 + Math.random() * 6, l: 8 + Math.random() * 14 }));
+    const dr = dust.getBoundingClientRect();
+    motes = Array.from({ length: 160 }, () => ({ x: Math.random() * dr.width, y: Math.random() * dr.height, v: .25 + Math.random() * .7, s: .6 + Math.random() * 1.8, d: Math.random() * 6.28 }));
+  }
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function drawRain(move) {
+    const w = rain.clientWidth, h = rain.clientHeight;
+    rc.clearRect(0, 0, w, h);
+    rc.strokeStyle = 'rgba(214,208,192,.33)'; rc.lineWidth = 1;
+    rc.beginPath();
+    drops.forEach(d => {
+      if (move) { d.y += d.v; d.x -= d.v * .22; if (d.y > h) { d.y = -d.l; d.x = Math.random() * w * 1.2; } }
+      rc.moveTo(d.x, d.y); rc.lineTo(d.x - d.l * .22, d.y + d.l);
+    });
+    rc.stroke();
+  }
+  function drawDust() {
+    const w = dust.clientWidth, h = dust.clientHeight;
+    dc.clearRect(0, 0, w, h);
+    const amt = state.dust || 0;
+    if (amt <= 0) return;
+    const n = Math.floor(motes.length * amt);
+    dc.fillStyle = 'rgba(150,142,128,.55)';
+    for (let i = 0; i < n; i++) {
+      const m = motes[i];
+      m.y += m.v; m.d += .02; m.x += Math.sin(m.d) * .3;
+      if (m.y > h) { m.y = -4; m.x = Math.random() * w; }
+      dc.fillRect(m.x, m.y, m.s, m.s);
+    }
+  }
+  const visible = el => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
+  function loop() {
+    const still = reduceMotion();
+    if (visible(rain)) drawRain(!still);
+    if (!still && !isStatic && visible(dust)) drawDust();
+    requestAnimationFrame(loop);
+  }
+
+  /* ---- lens slider ---- */
+  const STOPS = ['Duy tâm', 'Duy vật siêu hình', 'Duy vật biện chứng'];
+  const Q = [
+    { q: 'Vì sao thợ dệt Silesia nổi dậy năm 1844?', a: [
+      'Vì tinh thần tự do của thời đại đã chín muồi.',
+      'Vì máy dệt cơ khí ra đời. Có máy móc thì tất yếu có nổi dậy; con người chỉ bị cuốn theo.',
+      'Vải dệt bằng máy giá rẻ đẩy thu nhập của thợ dệt thủ công xuống mức đói, mâu thuẫn giữa họ với giới thương nhân bao mua ngày càng gay gắt. Khi người thợ nhận ra cảnh ngộ chung của mình, mâu thuẫn ấy bùng lên thành hành động.'] },
+    { q: 'Vì sao dự án phần mềm bị trễ hạn?', a: [
+      'Vì cả nhóm thiếu quyết tâm.',
+      'Vì công cụ kém. Cứ đổi công cụ là xong.',
+      'Điều kiện thực tế (nhân lực, hạ tầng, nợ kỹ thuật) giới hạn năng lực của nhóm; gốc rễ là mâu thuẫn giữa khối lượng yêu cầu và năng lực ấy. Tinh thần làm việc có tác động trở lại, nhưng không thay thế được điều kiện.'] },
+    { q: 'Vì sao ngày càng nhiều người làm việc qua nền tảng số?', a: [
+      'Vì giới trẻ thích tự do.',
+      'Vì có ứng dụng. Công nghệ quyết định tất cả.',
+      'Nền tảng số thay đổi cách tổ chức lao động, kéo theo những quan hệ lao động mới. Nhu cầu tự chủ là có thật và có tác động trở lại, nhưng nó nảy sinh từ chính những điều kiện ấy.'] }
+  ];
+  let qi = 0;
+  const lens = $('#lens'), qs = $('#qs');
+  Q.forEach((item, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = item.q; b.id = 'q' + i;
+    b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.addEventListener('click', () => { qi = i; qs.querySelectorAll('button').forEach((x, j) => x.setAttribute('aria-pressed', j === i ? 'true' : 'false')); renderLens(); });
+    qs.appendChild(b);
+  });
+  const MINI = [
+    '<path d="M20 22H100L60 92Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><line x1="10" y1="106" x2="110" y2="106" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="3 4"/>',
+    '<path d="M20 92H100L60 22Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><line x1="10" y1="100" x2="110" y2="100" stroke="currentColor" stroke-width="2"/>',
+    '<path d="M24 92H96L60 26Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><line x1="10" y1="100" x2="110" y2="100" stroke="currentColor" stroke-width="2"/><path d="M10 88V34" stroke="currentColor" stroke-width="2" marker-end="url(#mh)"/><path d="M110 34V88" stroke="#E2584B" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mhr)"/>'
+  ];
+  const MDEFS = '<defs><marker id="mh" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker><marker id="mhr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E2584B"/></marker></defs>';
+  function renderLens() {
+    const v = +lens.value;
+    lens.setAttribute('aria-valuetext', STOPS[v]);
+    $('#stopName').textContent = STOPS[v];
+    $('#stopText').textContent = Q[qi].a[v];
+    $('#badge').hidden = v !== 2;
+    $('#mini').innerHTML = MDEFS + MINI[v];
+    $('#ticks').querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.v === v));
+  }
+  lens.addEventListener('input', renderLens);
+  $('#ticks').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; lens.value = b.dataset.v; renderLens(); });
+
+  /* ---- flip cards ---- */
+  const CARDS = [
+    { q: 'Luận đề 11 cho rằng chỉ cần hành động, không cần lý luận.', t: false, e: 'Marx chỉ phê phán việc dừng lại ở giải thích. Muốn cải tạo thế giới vẫn cần lý luận soi đường.', go: '#luan-de-11', gl: 'Chương III' },
+    { q: 'Marx bác bỏ toàn bộ triết học Hegel.', t: false, e: 'Ông giữ lại phép biện chứng, tức hạt nhân hợp lý, và gạt bỏ nền tảng duy tâm.', go: '#hegel', gl: 'Chương II' },
+    { q: 'Theo duy vật biện chứng, ý thức có thể tác động trở lại vật chất.', t: true, e: 'Vật chất quyết định ý thức, nhưng ý thức có tính độc lập tương đối và tác động trở lại.', go: '#hegel', gl: 'Chương II' },
+    { q: 'Một lý thuyết được nhiều chuyên gia đồng thuận vẫn có thể sai.', t: true, e: 'Thước đo chân lý là thực tiễn chứ không phải số đông (Luận đề 2).', go: '#luan-de-11', gl: 'Chương III' },
+    { q: 'Luận cương về Feuerbach được công bố ngay năm 1845.', t: false, e: 'Phải đến năm 1888 Engels mới công bố lần đầu, có sửa đôi chỗ câu chữ.', go: '#luan-de-11', gl: 'Chương III' }
+  ];
+  const seen = new Set();
+  const cardsEl = $('#cards');
+  CARDS.forEach((c, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'flip';
+    wrap.innerHTML = `
+      <button type="button" class="face front" id="card${i}" aria-label="Thẻ ${i + 1}: ${c.q} Lật để xem đáp án">
+        <span class="n">Thẻ ${i + 1} / 5</span><span class="q">${c.q}</span><span class="tap">Lật thẻ ↻</span>
+      </button>
+      <div class="face back" inert>
+        <span class="verdict ${c.t ? 't' : 'f'}">${c.t ? 'Đúng.' : 'Sai.'}</span>
+        <p>${c.e}</p>
+        <div class="row"><a href="${c.go}">Xem ${c.gl}</a><button type="button">Lật lại</button></div>
+      </div>`;
+    const front = wrap.querySelector('.front'), back = wrap.querySelector('.back');
+    const set = on => {
+      wrap.classList.toggle('on', on);
+      front.inert = on; back.inert = !on;
+      if (on) { seen.add(i); $('#score').textContent = `Đã lật ${seen.size}/5 thẻ`; back.querySelector('button').focus({ preventScroll: true }); }
+      else front.focus({ preventScroll: true });
+    };
+    front.addEventListener('click', () => set(true));
+    back.querySelector('button').addEventListener('click', () => set(false));
+    cardsEl.appendChild(wrap);
+  });
+
+  renderLens();
+  sizeCanvases();
+  railLayout();
+  update();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { sizeCanvases(); railLayout(); update(); });
+  addEventListener('load', () => { railLayout(); update(); });
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body></html>

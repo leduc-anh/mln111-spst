@@ -61,13 +61,78 @@
     {id:'london', style:'poverty', theme:'dark', date:'London · 1849', stop:'Lưu vong và nghèo khó', title:'Lưu vong.<br><i>Không bỏ cuộc.</i>', insight:'Nghèo khó. Tiếp tục nghiên cứu.', name:'Karl Marx · Một khởi đầu khó khăn ở London', image:'london-attic.webp', art:actor('marx','write','marx-writer') + writingDesk + rent},
     {id:'tu-ban', style:'capital', theme:'paper', date:'London → Hamburg · 1867', stop:'Tư bản xuất bản', title:'Tư bản.<br><i>Sau bao năm.</i>', insight:'Quyển I xuất bản. Một đời nghiên cứu.', name:'Karl Marx · 49 tuổi · Das Kapital', image:'london-library.webp', art:actor('marx','read','marx-capital',true) + capital}
   ];
+  const unescoSource = 'https://www.unesco.org/en/memory-world/manifest-der-kommunistischen-partei-draft-manuscript-page-and-das-kapital-erster-band-karl-marxs';
+  scenes[0].heritage = `Năm 2013, UNESCO ghi danh một trang bản thảo <em>Tuyên ngôn của Đảng Cộng sản</em> và bản <em>Tư bản</em>, quyển I, có ghi chú của chính Marx vào chương trình <a href="${unescoSource}" target="_blank" rel="noopener noreferrer">Ký ức Thế giới ↗</a>.`;
+  const settings = [
+    {paper:'#ede5d4', ink:'#302b23', accent:'#906529', mood:'dawn', context:'Trier · Thành phố bên sông Moselle, nơi câu chuyện bắt đầu.'},
+    {paper:'#d7dce0', ink:'#252d35', accent:'#a12f35', mood:'ink', context:'Cologne · Tòa soạn dưới sức ép kiểm duyệt của chính quyền Phổ.'},
+    {paper:'#f1dfc8', ink:'#4b302a', accent:'#ad5538', mood:'cafe', context:'Paris · Một quán cà phê, những cuộc trao đổi và tình bạn với Engels.'},
+    {paper:'#dce5de', ink:'#2d443d', accent:'#326b60', mood:'wind', context:'Brussels · Rời Paris, mang theo bản thảo và những câu hỏi về thực tiễn.'},
+    {paper:'#321b21', ink:'#f7e5ce', accent:'#ef9b78', mood:'embers', context:'1848 · Máy in, quảng trường và làn sóng cách mạng khắp châu Âu.'},
+    {paper:'#192a38', ink:'#e1e8ed', accent:'#dda77a', mood:'rain', context:'London · Căn gác chật, mưa ngoài cửa sổ và những đêm nghiên cứu.'},
+    {paper:'#eee6cd', ink:'#343b2c', accent:'#657644', mood:'library', context:'London → Hamburg · Từ bàn đọc thư viện đến quyển I của Tư bản.'}
+  ];
+  scenes.forEach((scene, i) => Object.assign(scene, settings[i]));
+  scenes[2].image = 'paris-cafe-v2.webp';
+  scenes[3].image = 'brussels-study.webp';
+  scenes[4].image = 'workers-square-v2.webp';
+  function sceneryEffects(mood) {
+    const waves = `<svg class="river-reflections" viewBox="0 0 800 180" preserveAspectRatio="none"><g fill="none" stroke="currentColor" stroke-width="1.5">${Array.from({length:12}, (_, i) => `<path style="--row:${i}" d="M${i % 2 ? 40 : 0} ${15 + i * 13}q100-10 200 0t200 0t200 0t200 0"/>`).join('')}</g></svg>`;
+    const pages = `<div class="wind-pages">${Array.from({length:5}, (_, i) => `<span style="--p:${i}"></span>`).join('')}</div>`;
+    const extras = {
+      dawn: `<div class="sun-halo"></div><div class="light-rays"></div>${waves}<div class="river-mist"></div>`,
+      ink: '<div class="window-shadow"></div><div class="ink-cloud"></div><div class="press-type">RHEINISCHE<br>ZEITUNG<span>COLOGNE · 1843</span></div>',
+      cafe: '<div class="cafe-lamplight"></div><div class="cafe-bokeh"><i></i><i></i><i></i><i></i></div><div class="ambient-steam"><span></span><span></span><span></span></div>',
+      wind: `${pages}<div class="travelling-fog"></div><div class="wind-ribbons"><span></span><span></span><span></span></div>`,
+      embers: '<div class="revolution-glow"></div><div class="street-smoke"></div><div class="street-smoke smoke-far"></div><div class="revolution-ribbons"><span></span><span></span></div>',
+      rain: `<div class="rain-window"><span></span><span></span></div><div class="window-droplets">${Array.from({length:12}, (_, i) => `<i style="--drop:${i}"></i>`).join('')}</div>${waves}<div class="candle-halo"></div>`,
+      library: '<div class="library-rays"></div><div class="library-rays rays-far"></div><div class="library-glow"></div><div class="book-dust"><i></i><i></i><i></i><i></i></div>'
+    };
+    return `<div class="scenic-effects scenic-effects--${mood}">${extras[mood]}</div>`;
+  }
   const number = i => String(i + 1).padStart(2, '0');
   $('#journey').innerHTML = scenes.map((s, i) => `<section class="node node--${s.style}${i === 0 ? ' is-active' : ''}" id="${s.id}" data-theme="${s.theme}" aria-labelledby="title-${s.id}"><div class="scene-art" aria-hidden="true"><img class="backdrop" src="img/${s.image}" alt="" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>${s.art}</div><div class="scene-caption"><p class="scene-date">${number(i)} / ${s.date}</p><${i ? 'h2' : 'h1'} id="title-${s.id}">${s.title}</${i ? 'h2' : 'h1'}>${s.hook ? `<p class="milestone-title">${s.hook}</p>` : ''}<p class="recognition">${s.insight}</p>${i === scenes.length - 1 ? '<button class="end-note" data-open-notes type="button">Nhìn lại hành trình ↗</button>' : ''}</div><span class="scene-name">${s.name}</span></section>`).join('');
   $('#timelineStops').innerHTML = scenes.map((s, i) => `<li><a href="#${s.id}" ${i === 0 ? 'aria-current="step"' : ''}><b>${number(i)}</b><span><small>${s.date}</small>${s.stop}</span></a></li>`).join('');
+  scenes.forEach(scene => {
+    const node = document.getElementById(scene.id);
+    node.style.setProperty('--scene-paper', scene.paper);
+    node.style.setProperty('--scene-ink', scene.ink);
+    node.style.setProperty('--scene-accent', scene.accent);
+    node.dataset.mood = scene.mood;
+    node.querySelector('.scene-art').insertAdjacentHTML('beforeend', `<div class="atmosphere atmosphere--${scene.mood}">${'<i></i>'.repeat(8)}</div>`);
+    node.querySelector('.scene-art').insertAdjacentHTML('beforeend', sceneryEffects(scene.mood));
+    node.querySelector('.scene-name').textContent = scene.context;
+    if (scene.heritage) node.querySelector('.scene-caption').insertAdjacentHTML('beforeend', `<p class="heritage"><span>DI SẢN TƯ LIỆU · UNESCO 2013</span>${scene.heritage}</p>`);
+  });
+  document.querySelector('.node--intro .scene-art').insertAdjacentHTML('beforeend', `<div class="heritage-gallery"><div class="heritage-gallery-heading">UNESCO <span>KÝ ỨC THẾ GIỚI · 2013</span></div><figure><img src="img/unesco-manifesto.jpg" alt="Trang bản thảo Tuyên ngôn của Đảng Cộng sản được UNESCO ghi danh"><figcaption>Trang bản thảo Tuyên ngôn</figcaption></figure><figure><img src="img/unesco-capital.jpg" alt="Bản Tư bản quyển I với ghi chú viết tay của Karl Marx"><figcaption>Tư bản I · Ghi chú của Marx</figcaption></figure><small>Ảnh: © International Institute of Social History · UNESCO</small></div>`);
 
   const nodes = [...document.querySelectorAll('.node')];
   const links = [...document.querySelectorAll('.timeline a')];
   const notes = $('#notes');
+  $('.notes-list').innerHTML = scenes.map((scene, i) => `<li><b>${scene.date} · ${scene.stop}.</b> ${JourneyDetails[i].summary}<button class="read-more" type="button" data-read-more="${i}" aria-label="Đọc thêm: ${scene.stop}">Đọc thêm <span aria-hidden="true">↗</span></button></li>`).join('');
+  const notesBody = document.createElement('div');
+  [...notes.children].filter(child => !child.classList.contains('close-notes')).forEach(child => notesBody.append(child));
+  notes.append(notesBody);
+  const notesSummary = notesBody.innerHTML;
+  let detailsIndex = null;
+  function showNotesSummary(returnFocus = false) {
+    notesBody.innerHTML = notesSummary;
+    notes.classList.remove('notes--detail');
+    notes.scrollTop = 0;
+    if (returnFocus && detailsIndex !== null) notes.querySelector(`[data-read-more="${detailsIndex}"]`).focus();
+    detailsIndex = null;
+  }
+  function showMilestoneDetails(index) {
+    const scene = scenes[index], detail = JourneyDetails[index];
+    if (!scene || !detail) return;
+    detailsIndex = index;
+    // Keep the corresponding chapter visible behind its expanded reading view.
+    go(index, true);
+    notes.classList.add('notes--detail');
+    notesBody.innerHTML = `<button class="notes-back" type="button" data-notes-back>← Về hành trình</button><p class="scene-date">Cột mốc ${number(index)} · ${scene.date}</p><h2 id="notes-title" tabindex="-1">${scene.stop}</h2><figure class="detail-image"><img src="img/${scene.image}" alt="Minh họa bối cảnh: ${scene.context}"><figcaption>${scene.context}</figcaption></figure><div class="detail-copy">${detail.paragraphs.map(p => `<p>${p}</p>`).join('')}<aside><b>Ý nghĩa của cột mốc</b><p>${detail.meaning}</p></aside></div>${index === 0 ? `<div class="detail-documents"><figure><img src="img/unesco-manifesto.jpg" alt="Trang bản thảo Tuyên ngôn"><figcaption>Trang bản thảo Tuyên ngôn</figcaption></figure><figure><img src="img/unesco-capital.jpg" alt="Tư bản I với ghi chú của Marx"><figcaption>Tư bản I có ghi chú của Marx</figcaption></figure><small>© International Institute of Social History · UNESCO</small></div>` : ''}<div class="detail-sources"><b>Nguồn đọc thêm</b>${detail.sources.map(([label,url]) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`).join('')}</div><div class="detail-navigation">${index > 0 ? `<button type="button" data-read-more="${index - 1}">← Mốc trước</button>` : '<span></span>'}${index < scenes.length - 1 ? `<button type="button" data-read-more="${index + 1}">Mốc tiếp →</button>` : '<span></span>'}</div>`;
+    notes.scrollTop = 0;
+    $('#notes-title').focus({preventScroll:true});
+  }
   let active = -1, settleUntil = 0, lastWheel = -Infinity, gestureUsed = false, wheelSum = 0, framePending = false;
   const music = new JourneyMusic($('#musicToggle'), $('#musicLabel'));
   function syncMotion() {
@@ -85,9 +150,9 @@
       active = nearest;
       nodes.forEach((node, i) => node.classList.toggle('is-active', i === active));
       links.forEach((link, i) => i === active ? link.setAttribute('aria-current', 'step') : link.removeAttribute('aria-current'));
-      const dark = scenes[active].theme === 'dark';
-      document.documentElement.style.setProperty('--current-ink', dark ? '#f0e6d2' : '#27241e');
-      document.documentElement.style.setProperty('--current-paper', dark ? '#25231e' : '#e8e1d3');
+      document.documentElement.style.setProperty('--current-ink', scenes[active].ink);
+      document.documentElement.style.setProperty('--current-paper', scenes[active].paper);
+      document.documentElement.style.setProperty('--red', scenes[active].accent);
       $('#stepCount').innerHTML = `${number(active)} <i>/ ${number(scenes.length - 1)}</i>`;
       $('#previous').disabled = active === 0;
       $('#next').disabled = active === nodes.length - 1;
@@ -140,7 +205,10 @@
       const index = scenes.findIndex(scene => '#' + scene.id === anchor.getAttribute('href'));
       if (index >= 0) {event.preventDefault(); go(index);}
     }
-    if (event.target.closest('[data-open-notes]')) {notes.showModal(); document.documentElement.style.overflow = 'hidden';}
+    const readMore = event.target.closest('[data-read-more]');
+    if (readMore) showMilestoneDetails(Number(readMore.dataset.readMore));
+    if (event.target.closest('[data-notes-back]')) showNotesSummary(true);
+    if (event.target.closest('[data-open-notes]')) {showNotesSummary(); notes.showModal(); document.documentElement.style.overflow = 'hidden';}
   });
   $('.close-notes').addEventListener('click', () => notes.close());
   notes.addEventListener('close', () => {document.documentElement.style.overflow = '';});

@@ -8,7 +8,9 @@
   <meta name="description" content="Sáu bước ngoặt trong đời Karl Marx: kiểm duyệt, tình bạn với Engels, lưu vong, Tuyên ngôn và Tư bản. Một hành trình kể bằng hình ảnh và chuyển động.">
   <link rel="stylesheet" href="fonts/fonts.css">
   <link rel="stylesheet" href="story.css">
+  <link rel="stylesheet" href="scene-effects.css">
   <script src="music.js" defer></script>
+  <script src="milestone-details.js" defer></script>
   <script src="story.js" defer></script>
 </head>
 <body>
@@ -25,7 +27,7 @@
   <noscript><p class="no-script">Bật JavaScript để xem hành trình minh họa.</p></noscript>
   <footer class="journey-controls">
     <span class="scroll-hint"><span class="mouse-icon" aria-hidden="true"></span>Cuộn · sang chặng tiếp</span>
-    <div class="music-control"><button id="musicToggle" type="button" aria-pressed="false"><span aria-hidden="true">♫</span> <span class="music-action">Bật nhạc</span></button><span id="musicLabel">Nhạc theo cột mốc</span></div>
+    <div class="music-control"><button id="musicToggle" type="button" aria-pressed="false"><span aria-hidden="true">♫</span> <span class="music-action">Bật nhạc</span></button><span id="musicLabel" hidden></span></div>
     <div class="step-controls"><span id="stepCount" aria-live="polite">01 <i>/ 07</i></span><button id="previous" type="button" aria-label="Chặng trước" disabled>↑</button><button id="next" type="button" aria-label="Chặng tiếp">↓</button></div>
   </footer>
   <dialog id="notes" aria-labelledby="notes-title">
@@ -39,7 +41,7 @@
       <li><b>1849 · London, một khởi đầu khó khăn.</b> Sau các lần bị buộc rời Đức và Paris, Marx đến London. Gia đình gặp khó khăn tài chính; Engels hỗ trợ để ông tiếp tục nghiên cứu.</li>
       <li><b>1867 · Tư bản xuất bản.</b> Sau nhiều năm nghiên cứu, quyển I của Tư bản được xuất bản ở Hamburg. Đây là quyển duy nhất của bộ sách được xuất bản khi Marx còn sống.</li>
     </ol>
-    <p class="art-note">Minh họa tái hiện, không phải ảnh tư liệu. Các chuyển động mang tính kể chuyện.</p>
+    <p class="art-note">Bối cảnh và nhân vật là minh họa tái hiện. Hai ảnh bản thảo ở mốc giới thiệu là ảnh tư liệu từ International Institute of Social History, đăng trên UNESCO.</p>
     <details><summary>Nguồn các cột mốc</summary><p><a href="https://www.dhm.de/lemo/biografie/karl-marx" target="_blank" rel="noopener noreferrer">Bảo tàng Lịch sử Đức · Tiểu sử Karl Marx</a><br><a href="https://www.marxists.org/archive/marx/bio/marx/lifeandwork.htm" target="_blank" rel="noopener noreferrer">Marxists Internet Archive · Niên biểu cuộc đời và tác phẩm</a><br><a href="https://www.marxists.org/archive/marx/bio/marx/eng-1869.htm" target="_blank" rel="noopener noreferrer">Friedrich Engels · Tiểu sử Karl Marx (1869)</a></p></details>
   </dialog>
 </body>
